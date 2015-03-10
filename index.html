@@ -1,0 +1,79 @@
+<html>
+<head>
+ <!-- midi.js package -->
+<script src="./js/MIDI.js/js/MIDI/AudioDetect.js" type="text/javascript"></script>
+ <script src="./js/MIDI.js/js/MIDI/LoadPlugin.js" type="text/javascript"></script>
+ <script src="./js/MIDI.js/js/MIDI/Plugin.js" type="text/javascript"></script>
+ <script src="./js/MIDI.js/js/MIDI/Player.js"
+type="text/javascript"></script>
+
+ <script src="./js/MIDI.js/js/Window/DOMLoader.XMLHttp.js" type="text/javascript"></script>
+ <!-- <script src="./js/MIDI.js/js/Window/DOMLoader.script.js"
+type="text/javascript"></script> -->
+ <!-- extras -->
+ <script src="./js/MIDI.js/inc/Base64.js" type="text/javascript"></script>
+ <script src="./js/MIDI.js/inc/base64binary.js" type="text/javascript"></script>
+
+<!-- Metadata -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Web-based musical device that
+converts movement (acquired from webcam) to sonic activity">
+<meta name="keywords" content="Music,Electroacoustics,Movement,Motion,Synesthesia,HTML,JavaScript">
+<meta name="author" content="Tiago Fernandes Tavares">
+<title>Motus 3</title>
+
+<style>
+a:link {color:#00FF00;}      /* unvisited link */
+a:visited {color:#00FF00;}  /* visited link */
+a:hover {color:#FFFF00;}  /* mouse over link */
+a:active {color:#FFFFFF;}  /* selected link */
+
+.videoElement
+{
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+}
+
+</style>
+
+</head>
+
+<body style="color:white;background-color:black">
+<h1>Motus 3.1</h1>
+<div style="float:center">
+<canvas id=c class=videoElement></canvas>
+	</div>
+<div style="float:right">
+Tiago F. Tavares - tiagoft [at] gmail dot com<br>
+<a href="http://www.ted.com/tedx/events/8023">TEDx</a> - 03/nov/2013,
+	Campinas, BR - V3.0<br>
+Mostra de Jogos FATEC - 16/dez/2013,
+	Americana, BR - V3.1<br>
+
+	<a href="http://www.fee.unicamp.br/?q=content/eadca-programacao">Encontro de Alunos e Docentes do DCA (EADCA 2014)</a>, 08/maio/2014,
+	Campinas, BR - V3.1<br>
+	<a href="http://bit.ly/1bxxgXd">http://bit.ly/1bxxgXd</a><br>
+</div>
+
+	<div style="float:right;display:none;">
+	<b>Debug</b>
+<form>
+Top: <input type="texbox" id="moveTop"/> <br>
+Bottom: <input type="texbox" id="moveBottom"/> <br>
+Left: <input type="texbox" id="moveLeft"/> <br>
+Right: <input type="texbox" id="moveRight"/> <br>
+</form>
+
+</div>
+<div style="visibility:hidden;">
+<hr>
+<h2>Webcam</h2>
+<video id=v  class=videoElement width="640" height="480" autoplay></video>
+</div>
+</body>
+
+<script src="js/movement.js"></script>
+
+</html>
+
