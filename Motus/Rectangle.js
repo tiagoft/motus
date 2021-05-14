@@ -2,15 +2,17 @@ class Rectangle { // Begin class "Rectangle" //
 
 // Constructor for the class //
 // -----------------------------------------------------------------------------------------------------------------------------//
-  constructor(x, y, sound1, sound2, sound3) {
+  constructor(x, y, sound1, sound2, sound3, s, synth) {
     this.x = x;
     this.y = y;
     this.w = 0;
     this.h = 0;
+    this.area = (this.w) * (this.h);
     this.exit = 0;
     this.del = 0;
     this.text1 = 0;
     this.text2 = 0;
+    this.playSN = 0;
     this.playS = 0;
     this.sB1 = 0;
     this.sB2 = 0;
@@ -25,37 +27,10 @@ class Rectangle { // Begin class "Rectangle" //
     this.option = false;
     this.death = false;
     this.ready = false;
-    this.slide = createSlider(0, 1, 1, 0.01);
+    this.slide = createSlider(0, 1, s, 0.01);
     this.slide.remove();
-  }
-// -----------------------------------------------------------------------------------------------------------------------------//
-
-// Get Grabbed //
-// -----------------------------------------------------------------------------------------------------------------------------//
-  getGrabbed() {
-   return this.grabbed; 
-  }
-// -----------------------------------------------------------------------------------------------------------------------------//
-
-// Get Slide //
-// -----------------------------------------------------------------------------------------------------------------------------//
-  getSlide() {
-    return this.slide;
-  }
-// -----------------------------------------------------------------------------------------------------------------------------//
-  
-// Get Death //
-// -----------------------------------------------------------------------------------------------------------------------------//
-  getDeath() {
-    return this.death;
-  }
-// -----------------------------------------------------------------------------------------------------------------------------//
-
-
-// Get Options //
-// -----------------------------------------------------------------------------------------------------------------------------//
-  getOption() {
-    return this.option;
+    this.Synth = synth;
+    this.Synth.movW = map(this.area, 500, 583000, 110, 1);
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 
@@ -64,6 +39,7 @@ class Rectangle { // Begin class "Rectangle" //
   setS1() {
    this.playS = this.s1;
    this.ready = true;
+   this.playSN = 1;
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 
@@ -72,6 +48,7 @@ class Rectangle { // Begin class "Rectangle" //
   setS2() {
    this.playS = this.s2;
    this.ready = true;
+   this.playSN = 2;
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
   
@@ -80,6 +57,7 @@ class Rectangle { // Begin class "Rectangle" //
   setS3() {
    this.playS = this.s3;
    this.ready = true;
+   this.playSN = 3;
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 
@@ -146,6 +124,14 @@ class Rectangle { // Begin class "Rectangle" //
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 
+// Set Coordinetes FullScreen //
+// -----------------------------------------------------------------------------------------------------------------------------//
+  setCoordinetesFS(px, py) {
+    this.x = px;
+    this.y = py;
+  }
+// -----------------------------------------------------------------------------------------------------------------------------//
+
 // Set Coordinates //
 // -----------------------------------------------------------------------------------------------------------------------------//
   setCoordinetes(px, py) {
@@ -197,36 +183,6 @@ class Rectangle { // Begin class "Rectangle" //
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 
-// Show //
-// -----------------------------------------------------------------------------------------------------------------------------//
-  show(u) {
-    if(this.ready == true) {
-      stroke(this.R, this.G, this.B);
-    }
-    else {
-      stroke(255, 0, 0);
-    }
-    strokeWeight(1);
-    if(u == 0) {
-    fill(255, 70);
-    }
-    else {
-      noFill(); 
-    }
-    rect(this.x, this.y, this.w, this.h);
-  }
-// -----------------------------------------------------------------------------------------------------------------------------//
-
-// Show RGB //
-// -----------------------------------------------------------------------------------------------------------------------------//
-  showRGB(r, g, b) {
-    stroke(255);
-    strokeWeight(1);
-    fill(r, g, b, 70);
-    rect(this.x, this.y, this.w, this.h);
-  }
-// -----------------------------------------------------------------------------------------------------------------------------//
-
 // Clicked //
 // -----------------------------------------------------------------------------------------------------------------------------//
   clicked(px, py) {
@@ -267,6 +223,7 @@ class Rectangle { // Begin class "Rectangle" //
     }
     this.w = x - this.x;
     this.h = y - this.y;
+    this.area = ((this.w) * (this.h));
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 
@@ -280,6 +237,8 @@ class Rectangle { // Begin class "Rectangle" //
     let plFeedPixel;
     let index;
     let sum = 0;
+    let aux;
+    let movquant;
     live_feed.loadPixels();
     preLiveFeed.loadPixels();
     let Y_init = int(map(this.y, 0, windowHeight, 0, 480));
@@ -287,18 +246,21 @@ class Rectangle { // Begin class "Rectangle" //
     let X_init = int(map(this.x, (((windowWidth - liveFeedWidth)/2)), (windowWidth - (((windowWidth - liveFeedWidth)/2))), 640, 0));
     let X_fin = int(map((this.x + this.w), (((windowWidth - liveFeedWidth)/2)), (windowWidth - (((windowWidth - liveFeedWidth)/2))), 640, 0));
     for(let Y = Y_init; Y <= Y_fin; Y++) {
+      aux = 0;
+      sum = 0;
       for(let X = X_fin; X <= X_init; X++) {
         index = (X + Y * 640)*4;
         lFeedPixel = (live_feed.pixels[index+0] + live_feed.pixels[index+1] + live_feed.pixels[index+2])/3;
         plFeedPixel = (preLiveFeed.pixels[index+0] + preLiveFeed.pixels[index+1] + preLiveFeed.pixels[index+2])/3;
+        if((lFeedPixel - plFeedPixel) > 3) {aux++;}
         sum += (lFeedPixel - plFeedPixel) * (lFeedPixel - plFeedPixel);
       }
-      sum /= (X_init - X_fin);
+      if(aux != 0) {movquant = sum/ /*(X_init - X_fin)*/ aux;}
     }
-    sum /= (Y_fin - Y_init);
-    sum = sqrt(sum);
+    movquant /= (Y_fin - Y_init);
+    //movquant = sqrt(movquant);
     preLiveFeed.copy(live_feed, 0, 0, live_feed.width, live_feed.height, 0, 0, live_feed.width, live_feed.height);
-    return sum;
+    return movquant;
   }
 // -----------------------------------------------------------------------------------------------------------------------------//
 

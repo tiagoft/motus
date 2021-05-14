@@ -23,7 +23,8 @@ function mousePressed() { // Begin "mousePressed()" //
     }
   }
   if(bool == false && mouseX > (windowWidth - liveFeedWidth)/2 && mouseX < windowWidth - ((windowWidth - liveFeedWidth)/2)) {
-     let b = new Rectangle(mouseX, mouseY, sound1, sound2, sound3);
+     let sy = new PH_Synth();
+     let b = new Rectangle(mouseX, mouseY, sound1, sound2, sound3, 1, sy);
      objects.push(b);
      drag = true;
   }
